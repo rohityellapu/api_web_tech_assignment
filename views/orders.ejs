@@ -1,0 +1,107 @@
+<% layout('boilerplate')%>
+<% if (err) { %>
+<h1 class="text-center text-danger"><%= err %> </h1>
+<% } %>
+<div class="table-responsive p-4">
+
+
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th scope="text-start">Order ID</th>
+                <th scope="text-start">Customer ID</th>
+                <th scope="text-end">Inventory ID</th>
+                <th scope="text-end">Item Name</th>
+                <th scope="text-end">Quantity</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            <% for( let order of orders ) { %>
+            <tr>
+                <th><%= order._id.toString().toUpperCase().substr(10) %> </th>
+                <th><%= order.customerId.toString().toUpperCase().substr(10) %> </th>
+                <th><%= order.inventoryId.toString().toUpperCase().substr(10) %> </th>
+
+                <th><%= order.item_name %> </th>
+                <th><%= order.quantity %> </th>
+            </tr>
+            <% } %>
+        </tbody>
+    </table>
+</div>
+<!-- Button trigger modal -->
+<p class="text-center m-4">
+
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#inventoryModal">
+        Place Order
+    </button>
+</p>
+
+<!-- Modal -->
+<div class="modal fade text-black" id="inventoryModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog  modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 text-black" id="exampleModalLabel">Place Order</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <form action="/orders" method="post" class="mb-3 needs-validation text-dark" novalidate>
+                    <div class="mb-3">
+                        <label for="customer-email" class="form-label">Customer Email</label>
+                        <select name="email" id="customer-email" required class="form-control">
+                            <option value="" disabled>Select Customer</option>
+                            <% for( let customer of customers ) { %>
+                            <option value="<%= customer.email %>"><%= customer.email %></option>
+                            <% } %>
+                        </select>
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                        <div class="invalid-feedback">
+                            Please enter Email.
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="product-name" class="form-label">Product Name</label>
+                        <select name="name" id="product-name" required class="form-control">
+                            <option value="" disabled>Select Product</option>
+                            <% for( let inv of inventories ) { %>
+                            <option value="<%= inv.name %>"><%= inv.name %></option>
+                            <% } %>
+                        </select>
+
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                        <div class="invalid-feedback">
+                            Please enter the Product Name
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="inventory-quantity" class="form-label">Quantity</label>
+                        <input type="number" name="quantity" id="inventory-quantity" name="Quantity" required
+                            class="form-control">
+
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                        <div class="invalid-feedback">
+                            Please enter Quantity
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <button class="btn btn-primary" type="submit">Place Order</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+</div>
